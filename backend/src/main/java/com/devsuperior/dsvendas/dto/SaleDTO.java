@@ -3,7 +3,6 @@ package com.devsuperior.dsvendas.dto;
 import java.time.LocalDate;
 
 import com.devsuperior.dsvendas.entities.Sale;
-import com.devsuperior.dsvendas.entities.Seller;
 
 public class SaleDTO {
 	private Long id;
