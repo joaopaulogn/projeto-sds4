@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import api from 'services/api';
 import { SaleSum } from 'types/sale';
+import api from 'services/api';
 
 interface ChartData {
     labels: Array<string>;
@@ -8,21 +9,18 @@ interface ChartData {
 }
 
 const DonutChart = () => {
-    let chartData: ChartData = {labels: [], series: []};
+    const [chartData, setChartData] = useState<ChartData>({labels: [], series: []});
 
-    // const mockData = {
-    //     series: [477138, 499928, 444867, 220426, 473088],
-    //     labels: ['Anakin', 'Barry Allen', 'Kal-El', 'Logan', 'Padmé']
-    // }
-
-    api.get('/sales/amount-by-seller')
+    useEffect(() => {
+        api.get('/sales/amount-by-seller')
         .then((response) => {
             const data = response.data as Array<SaleSum>;
             const myLabels = data.map(x => x.sellerName);
             const mySeries = data.map(x => x.sum);
 
-            chartData = {labels: myLabels, series: mySeries}
+           setChartData({labels: myLabels, series: mySeries});
         })
+    }, [])
     
     const options = {
         legend: {
