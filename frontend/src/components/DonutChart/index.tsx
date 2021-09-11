@@ -15,10 +15,10 @@ const DonutChart = () => {
         api.get('/sales/amount-by-seller')
         .then((response) => {
             const data = response.data as Array<SaleSum>;
-            const myLabels = data.map(x => x.sellerName);
-            const mySeries = data.map(x => x.sum);
+            const labels = data.map(x => x.sellerName);
+            const series = data.map(x => x.sum);
 
-           setChartData({labels: myLabels, series: mySeries});
+           setChartData({labels, series});
         })
     }, [])
     
