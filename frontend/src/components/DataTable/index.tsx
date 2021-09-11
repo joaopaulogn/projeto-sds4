@@ -1,9 +1,11 @@
+import Pagination from 'components/Pagination';
 import React, { useEffect, useState } from 'react'
 import api from 'services/api';
 import { SalePage } from 'types/sale';
 import { formatLocalDate } from 'utils/format';
 
 const DataTable = () => {
+    const [activePage, setActivePage] = useState(0);
     const [page, setPage] = useState<SalePage>({
         first: true,
         last: true,
@@ -13,21 +15,20 @@ const DataTable = () => {
     })
 
     useEffect(() => {
-        api.get('/sales?page=0&size=20&sort=date,desc')
+        api.get(`/sales?page=${activePage}&size=20&sort=date,desc`)
             .then((response) => {
                 const data = response.data as SalePage;
-                setPage({
-                    content: data.content,
-                    first: data.first,
-                    last: data.last,
-                    number: data.number,
-                    totalElements: data.totalElements,
-                    totalPages: data.totalPages
-                })
+                setPage(data)
             })
-    })
+    }, [activePage])
+
+    function handlePageChange(index: number) {
+        setActivePage(index);
+    }
 
     return (
+        <>
+        <Pagination page={page} onPageChange={handlePageChange}/>
         <div className="table-responsive">
             <table className="table table-striped table-sm">
                 <thead>
@@ -53,6 +54,7 @@ const DataTable = () => {
                 </tbody>
             </table>
         </div>
+        </>
     )
 }
 
